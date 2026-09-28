@@ -1,7 +1,7 @@
 import config from "../config/config.js";
 import jwt from "jsonwebtoken";
 
-export function createAccessToken({ userId, role }) {
+export const createAccessToken = ({ userId, role }) => {
 	const accessToken = jwt.sign(
 		{
 			userId,
@@ -12,9 +12,13 @@ export function createAccessToken({ userId, role }) {
 	);
 
 	return accessToken;
-}
+};
 
-export function createRefreshToken({ userId, role }) {
+export const readAccessToken = (accessToken) => {
+	return jwt.verify(accessToken, config.ACCESS_TOKEN_SECRET);
+};
+
+export const createRefreshToken = ({ userId, role }) => {
 	const refreshToken = jwt.sign(
 		{
 			userId,
@@ -25,4 +29,8 @@ export function createRefreshToken({ userId, role }) {
 	);
 
 	return refreshToken;
-}
+};
+
+export const readRefreshToken = (refreshToken) => {
+	return jwt.verify(refreshToken, config.REFRESH_TOKEN_SECRET);
+};
