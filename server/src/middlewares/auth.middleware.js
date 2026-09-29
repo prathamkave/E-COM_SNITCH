@@ -1,7 +1,7 @@
 import { readAccessToken } from "../utils/auth.utils.js";
 
-export function authenticate(req, res, next) {
-	const accessToken = req.headers.Authorization?.split(" ")[1];
+export const authenticate = (req, res, next) => {
+	const accessToken = req.headers.authorization?.split(" ")[1];
 
 	if (!accessToken) {
 		return res.status(400).json({
@@ -20,4 +20,4 @@ export function authenticate(req, res, next) {
 			message: "Invalid or expired access token",
 		});
 	}
-}
+};
