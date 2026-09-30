@@ -1,4 +1,4 @@
-import productmodel from "../model/product.model.js";
+import productModel from "../model/product.model.js";
 import { uploadFile } from "../services/storage.service.js";
 
 export const createProduct = async (req, res) => {
@@ -16,8 +16,32 @@ export const createProduct = async (req, res) => {
 		filesUrls.push(response.url);
 	}
 
-	res.status(200).json({
+	const product = await productModel.create({
+		title: req.body.title,
+		description: req.body.description,
+		price: {
+			amount: req.body.price.amount,
+			currency: req.body.price.currency,
+		},
+		sizes: req.body.sizes,
+		images: filesUrls,
+		seller: req.user.userId,
+	});
+
+	res.status(201).json({
 		message: "Product created successfully",
-		data: req.body,
+		data: {
+			product,
+		},
+	});
+};
+
+export const listallProducts = async (req, res) => {
+	const products = await productModel.find();
+	res.status(200).json({
+		message: "Products data fetched successfully",
+		data: {
+			products,
+		},
 	});
 };
