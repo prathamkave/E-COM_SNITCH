@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProductValidator } from "../validators/product.validator.js";
+import { createProductValidator } from "../validators/product.validators.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import {
 	createProduct,
