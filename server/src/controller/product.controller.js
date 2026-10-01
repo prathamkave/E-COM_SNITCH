@@ -37,11 +37,62 @@ export const createProduct = async (req, res) => {
 };
 
 export const listallProducts = async (req, res) => {
-	const products = await productModel.find();
+	const products = await productModel.find({ published: true });
 	res.status(200).json({
 		message: "Products data fetched successfully",
 		data: {
 			products,
 		},
+	});
+};
+
+export const listAllProductsToSeller = async (req, res) => {
+	const products = await productModel.find({});
+
+	return res.status(200).json({
+		message: "All products fetched successfully",
+		data: {
+			products,
+		},
+	});
+};
+
+export const unlistProduct = async (req, res) => {
+	const { id } = req.params;
+
+	const product = await productModel.findById(id);
+
+	if (!product) {
+		return res.status(404).json({
+			message: "Product not found by id",
+		});
+	}
+
+	await productModel.findByIdAndUpdate(id, {
+		published: false,
+	});
+
+	return res.status(200).json({
+		message: "Product unpublished successfully",
+	});
+};
+
+export const listProduct = async (req, res) => {
+	const { id } = req.params;
+
+	const product = await productModel.findById(id);
+
+	if (!product) {
+		return res.status(404).json({
+			message: "Product not found by id",
+		});
+	}
+
+	await productModel.findByIdAndUpdate(id, {
+		published: true,
+	});
+
+	return res.status(200).json({
+		message: "Product published successfully",
 	});
 };
